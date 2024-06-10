@@ -1,9 +1,3 @@
-resource "null_resource" "provider_registration" {
-    provisioner "local-exec" {
-      command = "az provider register --namespace 'Microsoft.Compute'"
-    }
-  }
-  
 # Generate random resource group name
 resource "random_id" "rg_name" {
   prefix = var.resource_group_name_prefix
@@ -44,7 +38,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     admin_username = var.username
 
     ssh_key {
-      key_data = jsondecode(azapi_resource_action.ssh_public_key_generator.output).publicKey
+      key_data = azapi_resource_action.ssh_public_key_generator.output.publicKey
     }
   }
   network_profile {
